@@ -1,4 +1,4 @@
-# this repository creates lab cisco enviroment from scratch follow by instruction:
+# this repository creates lab enviroment from scratch follow by instruction:
 1. clone
 2. rename
 3. push to your own repository
