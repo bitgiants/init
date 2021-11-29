@@ -9,7 +9,7 @@ mac_terraform_url = 'https://releases.hashicorp.com/terraform/1.0.11/terraform_1
 
 # Defining functions
 
-def check_terr_install(terraform_url,unzip,terraform_path):
+def check_terr_install(terraform_url, unzip, terraform_path):
     if os.system('terraform --version') == 0:
         print("Terraform already installed")
     else:
@@ -37,7 +37,7 @@ elif os_platform_name == 'Linux':
     linux_terraform_url = 'wget https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip'
     linux_unzip = 'unzip terraform_*.zip'
     linux_terraform_path = 'mv ./terraform /usr/local/bin/'
-    check_terr_install(linux_terraform_url,linux_unzip,linux_terraform_path)
+    check_terr_install(linux_terraform_url, linux_unzip, linux_terraform_path)
 elif os_platform_name == 'nt':
     print("this is a Windows OS")
     #os.chdir("../terraform")
@@ -46,7 +46,7 @@ elif os_platform_name == 'nt':
     #$ENV:PATH
     #'$ENV:PATH="$ENV:PATH;'   
     win_terraform_path =()
-    check_terr_install(win_terraform_url,win_unzip,win_terraform_path)
+    check_terr_install(win_terraform_url, win_unzip, win_terraform_path)
    
 else:
     print("Unreconized or unsupported OS")
