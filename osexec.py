@@ -40,7 +40,13 @@ elif os_platform_name == 'Linux':
     check_terr_install(linux_terraform_url,linux_unzip,linux_terraform_path)
 elif os_platform_name == 'nt':
     print("this is a Windows OS")
-    os.chdir("../terraform")
-    terraform_check = terraform_plan_output = os.system('terraform --version')
+    #os.chdir("../terraform")
+    win_terraform_url = 'Invoke-WebRequest https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_windows_amd64.zip -OutFile terraform.zip'
+    win_unzip = 'Expand-Archive -LiteralPath .\terraform.zip -DestinationPath 'C:\Program Files (x86)\''
+    #$ENV:PATH
+    #'$ENV:PATH="$ENV:PATH;'   
+    win_terraform_path =()
+    check_terr_install(win_terraform_url,win_unzip,win_terraform_path)
+   
 else:
     print("Unreconized or unsupported OS")
