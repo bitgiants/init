@@ -1,8 +1,8 @@
 import os
 import platform
 
-ter_path = "../../terraform/"
-ter_vars = "../../terraform/variables.tf"
+ter_path = "../terraform/"
+ter_vars = "../terraform/variables.tf"
 vsphere_user_name = str('default = "vsphere_user_name"')
 win_terraform_url = 'https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_windows_amd64.zip'
 mac_terraform_url = 'https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_darwin_amd64.zip'
@@ -25,6 +25,23 @@ def check_terr_install(terraform_url, unzip, terraform_path):
             os.system(terraform_path)
         else:
             print("Try to install Terraform manually")
+
+
+def execute_ter_apply():
+    should_exec_t_init = str(input("type 'yes(y)' if you would like to execute terraform init and plan and or enter "
+                                   "any key for cancelation: "))
+    if should_exec_t_init == 'yes' or should_exec_t_init == 'Yes' or should_exec_t_init == 'YES' or should_exec_t_init == 'y':
+        print(os.system(f'terraform -chdir="{ter_path}" init'))
+        print(os.system(f'terraform -chdir="{ter_path}" plan'))
+    else:
+        print('ok, next time!!!')
+
+    should_exec_t_apply = str(input("type 'yes(y)' if you would like to execute terraform apply or enter "
+                                    "any key for cancelation: "))
+    if should_exec_t_apply == 'yes' or should_exec_t_apply == 'Yes' or should_exec_t_apply == 'YES' or should_exec_t_init == 'y':
+        print(os.system(f'terraform -chdir="{ter_path}" apply'))
+    else:
+        print('ok, next time!!!')
 
 
 if os_platform_name == 'Darwin':
@@ -88,13 +105,19 @@ if user_choice == 'yes' or user_choice == 'Yes' or user_choice == 'YES':
     vsphere_server = get_user_data('Vcenter IP')
     vsphere_user = get_user_data('Vcenter username in format administrator@vsphere.local')
     vsphere_password = get_user_data('Vcenter password')
+    vsphere_host_name = get_user_data('ESXi host IP')
+    vsphere_datacenter = get_user_data('ESXi host name')
     print(f"you entered:\n vcenter IP: {vsphere_server}\n vcenter username: {vsphere_user}\n "
           f"vcenter user password: {vsphere_password}\n")
     concat_server = str('  default = ' + '"' + vsphere_server + '"')
     concat_username = str('  default = ' + '"' + vsphere_user + '"')
     concat_password = str('  default = ' + '"' + vsphere_password + '"')
+    concat_vsphere_host_name = str('  default = ' + '"' + vsphere_host_name + '"')
+    concat_vsphere_datacenter = str('  default = ' + '"' + vsphere_datacenter + '"')
     lines = ['variable "vsphere_server" {', '  type = string', concat_server, '}', '',
              'variable "vsphere_user" {', '  type = string', concat_username, '}', '',
+             'variable "vsphere_host_name" {', '  type = string', concat_vsphere_host_name, '}', '',
+             'variable "vsphere_datacenter" {', '  type = string', concat_vsphere_datacenter, '}', '',
              'variable "vsphere_password" {', '  type = string', concat_password, '}']
     with open(ter_vars, 'w') as f:
         for line in lines:
@@ -103,17 +126,4 @@ if user_choice == 'yes' or user_choice == 'Yes' or user_choice == 'YES':
 else:
     print('all right lets do that manually')
 
-should_exec_t_init = str(input("type 'yes(y)' if you would like to execute terraform init and plan and or enter "
-                               "any key for cancelation: "))
-if should_exec_t_init == 'yes' or should_exec_t_init == 'Yes' or should_exec_t_init == 'YES' or should_exec_t_init == 'y':
-    print(os.system(f'terraform -chdir="{ter_path}" init'))
-    print(os.system(f'terraform -chdir="{ter_path}" plan'))
-else:
-    print('ok, next time!!!')
-
-should_exec_t_apply = str(input("type 'yes(y)' if you would like to execute terraform apply or enter "
-                                "any key for cancelation: "))
-if should_exec_t_apply == 'yes' or should_exec_t_apply == 'Yes' or should_exec_t_apply == 'YES' or should_exec_t_init == 'y':
-    print(os.system(f'terraform -chdir="{ter_path}" apply'))
-else:
-    print('ok, next time!!!')
+execute_ter_apply()
